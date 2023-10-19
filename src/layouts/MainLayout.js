@@ -6,7 +6,7 @@ const MainLayout = props => {
     console.log("Main layout component");
     return (
         <div className="fullHeight">
-            <Header/>
+            <Header {...props}/>
             <div className="main">
                 {props.children}
             </div>
