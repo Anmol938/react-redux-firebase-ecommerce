@@ -11,6 +11,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth, handleUserProfile } from "./firebase/utils";
 import { onSnapshot } from "firebase/firestore";
 
+import Recovery from "./pages/Recovery";
+
 
 const initialState = {
   currentUser: null,
@@ -93,6 +95,17 @@ class App extends Component {
               )
             }
           />
+           <Route
+            path="/Recovery/*"
+            element={
+                <MainLayout>
+                <Routes>
+                  <Route index element={<Recovery />} />
+                </Routes>
+                </MainLayout>
+            }
+          />
+            
         </Routes>
       </div>
     );

@@ -9,6 +9,11 @@ import Button from './../forms/Button';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import AuthWrapper from '../AuthWrapper';
+import {Link} from 'react-router-dom';
+
+import Recovery from '../../pages/Recovery';
+
 
 const initialState = {
     email: '',
@@ -74,13 +79,12 @@ class SignIn extends Component{
     render()
     {
         const {email,password} = this.state;
-
+        const configAuthWrapper = {
+            headline: 'LogIn'
+        };
         return(
-            <div className='signin'>
-            <div className='wrap'>
-                <h2>
-                    LogIn
-                </h2>
+            
+            <AuthWrapper {...configAuthWrapper}>
                 <div className='formWrap'>
                     <form onSubmit={this.handleSubmit}>
                        
@@ -105,7 +109,11 @@ class SignIn extends Component{
                        </Button>
                        
                        
-                        <div className='socialSignin'>
+                       
+                    </form>
+    
+
+                    <div className='socialSignin'>
                         <div className='row'>
                             <Button onClick={signInWithGoogle}>
                                 Sign in with Google
@@ -114,13 +122,15 @@ class SignIn extends Component{
                             
                         </div>
                         </div>
-                    </form>
-    
-    
+                <div className='links'>
+                    <Link to='/Recovery'>
+                        Reset Password
+                    </Link>
                 </div>
-            </div>
-    
-            </div>
+
+
+                </div>
+                </AuthWrapper>
         );
     }
     
