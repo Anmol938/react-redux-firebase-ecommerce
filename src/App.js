@@ -13,29 +13,26 @@ import { onSnapshot } from "firebase/firestore";
 
 import Recovery from "./pages/Recovery";
 
+import { setCurrentUser } from "./redux/User/user.actions";
+import { connect } from "react-redux";
 
-const initialState = {
-  currentUser: null,
-};
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      ...initialState,
-    };
-  }
+  
 
   authListener = null;
 
   componentDidMount() {
+
+    const {setCurrentUser} = this.props;
+
     this.authListener = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
         const userRef = await handleUserProfile(userAuth);
         console.log(userRef); 
         // Fixed: Move the onSnapshot() call inside the handleUserProfile() function.
         userRef.onSnapshot(async (snapshot) => {
-          this.setState({
+          setCurrentUser({
             currentUser: {
               id: snapshot.id,
               ...snapshot.data(),
@@ -44,7 +41,7 @@ class App extends Component {
         });
         console.log("reached here");
       } else {
-        this.setState({ ...initialState });
+        setCurrentUser(userAuth);
       }
     });
   }
@@ -54,7 +51,7 @@ class App extends Component {
   }
 
   render() {
-    const { currentUser } = this.state;
+    const { currentUser } = this.props;
 
     console.log("Inside App component. currentUser:", currentUser); // Add this line
 
@@ -64,7 +61,7 @@ class App extends Component {
           <Route
             path="*"
             element={
-              <HomePageLayout currentUser={currentUser}>
+              <HomePageLayout >
                 <Routes>
                   <Route index element={<Homepage />} />
                 </Routes>
@@ -75,7 +72,7 @@ class App extends Component {
             path="/registration/*"
             element={
               currentUser ? <Navigate to='/' /> : (
-              <MainLayout currentUser={currentUser}>
+              <MainLayout >
                 <Routes>
                   <Route index element={<Registration />} />
                 </Routes>
@@ -87,7 +84,7 @@ class App extends Component {
             path="/login/*"
             element={
               currentUser ? <Navigate to="/" /> : (
-                <MainLayout currentUser={currentUser}>
+                <MainLayout >
                   <Routes>
                     <Route index element={<Login />} />
                   </Routes>
@@ -112,4 +109,12 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = ({user}) => ({
+  currentUser: user.currentUser
+});
+
+const mapDispatchToProps = dispatch => ({
+  setCurrentUser :user => dispatch(setCurrentUser(user))
+});
+
+export default connect(mapStateToProps,mapDispatchToProps)(App);
