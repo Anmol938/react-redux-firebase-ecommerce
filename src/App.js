@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import "./default.scss";
 import Homepage from "./pages/Homepage/Homepages";
 import Registration from "./pages/Registration";
@@ -16,17 +16,22 @@ import Recovery from "./pages/Recovery";
 import { setCurrentUser } from "./redux/User/user.actions";
 import { connect } from "react-redux";
 
+import Dashboard from "./pages/Dashboard";
 
-class App extends Component {
+import WithAuth from "./hoc/withAuth"
+
+
+const App = props =>  {
   
 
-  authListener = null;
+  
+  const {setCurrentUser,currentUser} = props;
 
-  componentDidMount() {
+  useEffect(() => {
 
-    const {setCurrentUser} = this.props;
+    // all below lines before return is called is for componenet did mount
 
-    this.authListener = auth.onAuthStateChanged(async (userAuth) => {
+    const authListener = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
         const userRef = await handleUserProfile(userAuth);
         console.log(userRef); 
@@ -44,14 +49,13 @@ class App extends Component {
         setCurrentUser(userAuth);
       }
     });
-  }
 
-  componentWillUnmount() {
-    this.authListener();
-  }
+    return () => {
+      authListener(); // in return function we perform clean up functions for component will unmount
+    };
+  }, [])
 
-  render() {
-    const { currentUser } = this.props;
+
 
     console.log("Inside App component. currentUser:", currentUser); // Add this line
 
@@ -102,12 +106,24 @@ class App extends Component {
                 </MainLayout>
             }
           />
-            
+            <Route
+            path="/Dashboard/*"
+            element={
+              <WithAuth>
+                <MainLayout>
+                <Routes>
+                  <Route index element={<Dashboard />} />
+                </Routes>
+                </MainLayout>
+                </WithAuth>
+            }
+          />
+
         </Routes>
       </div>
     );
   }
-}
+
 
 const mapStateToProps = ({user}) => ({
   currentUser: user.currentUser
