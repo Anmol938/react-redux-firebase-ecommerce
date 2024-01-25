@@ -14,7 +14,7 @@ import { onSnapshot } from "firebase/firestore";
 import Recovery from "./pages/Recovery";
 
 import { setCurrentUser } from "./redux/User/user.actions";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import Dashboard from "./pages/Dashboard";
 
@@ -24,8 +24,7 @@ import WithAuth from "./hoc/withAuth"
 const App = props =>  {
   
 
-  
-  const {setCurrentUser,currentUser} = props;
+  const dispatch =  useDispatch();  
 
   useEffect(() => {
 
@@ -37,17 +36,14 @@ const App = props =>  {
         console.log(userRef); 
         // Fixed: Move the onSnapshot() call inside the handleUserProfile() function.
         userRef.onSnapshot(async (snapshot) => {
-          setCurrentUser({
-            currentUser: {
+          dispatch(setCurrentUser({
               id: snapshot.id,
-              ...snapshot.data(),
-            },
-          });
+              ...snapshot.data()
+          }));
         });
         console.log("reached here");
-      } else {
-        setCurrentUser(userAuth);
-      }
+      } 
+      dispatch(setCurrentUser(userAuth));
     });
 
     return () => {
@@ -57,80 +53,38 @@ const App = props =>  {
 
 
 
-    console.log("Inside App component. currentUser:", currentUser); // Add this line
+    console.log("Inside App component. currentUser:", /*currentUser*/); // Add this line
 
     return (
       <div className="App">
         <Routes>
+          
           <Route
-            path="*"
-            element={
-              <HomePageLayout >
-                <Routes>
-                  <Route index element={<Homepage />} />
-                </Routes>
-              </HomePageLayout>
-            }
+           exact path="/"
+            element={<HomePageLayout><Homepage /></HomePageLayout>}
           />
           <Route
-            path="/registration/*"
-            element={
-              currentUser ? <Navigate to='/' /> : (
-              <MainLayout >
-                <Routes>
-                  <Route index element={<Registration />} />
-                </Routes>
-              </MainLayout>
-              )
-            }
-          />
+          path="/registration"
+          element={<MainLayout><Registration /></MainLayout>}
+        /> 
           <Route
-            path="/login/*"
-            element={
-              currentUser ? <Navigate to="/" /> : (
-                <MainLayout >
-                  <Routes>
-                    <Route index element={<Login />} />
-                  </Routes>
-                </MainLayout>
-              )
-            }
+            path="/login"
+            element={<MainLayout ><Login /></MainLayout>} 
           />
            <Route
-            path="/Recovery/*"
-            element={
-                <MainLayout>
-                <Routes>
-                  <Route index element={<Recovery />} />
-                </Routes>
-                </MainLayout>
-            }
+            path="/Recovery"
+            element={<MainLayout><Recovery /></MainLayout>}
           />
             <Route
-            path="/Dashboard/*"
-            element={
-              <WithAuth>
-                <MainLayout>
-                <Routes>
-                  <Route index element={<Dashboard />} />
-                </Routes>
-                </MainLayout>
-                </WithAuth>
-            }
-          />
-
+            path="/Dashboard"
+            element={<WithAuth><MainLayout><Dashboard /></MainLayout></WithAuth>} 
+            />
         </Routes>
       </div>
     );
   }
 
 
-const mapStateToProps = ({user}) => ({
-  currentUser: user.currentUser
-});
 
-const mapDispatchToProps = dispatch => ({
-  setCurrentUser :user => dispatch(setCurrentUser(user))
-});
 
-export default connect(mapStateToProps,mapDispatchToProps)(App);
+export default App;

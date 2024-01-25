@@ -1,25 +1,54 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import './styles.scss';
 
 import FormInput from '../forms/FormInput';
 import Button from '../forms/Button';
 import AuthWrapper from '../AuthWrapper';
 
-import {auth, handleUserProfile} from './../../firebase/utils';
 
 import { useNavigate } from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux';
+import {signUpUser, resetAllAuthForms} from './../../redux/User/user.actions';
+import { createSelector } from 'reselect';
 
 
 
+
+const selectUser = (state) => state.user;
+
+const mapState = createSelector([selectUser], (user) => ({
+  signUpSuccess: user.signUpSuccess,
+  signUpError: user.signUpError,
+}));
 
 const SignUp = props => {
-
+        const {signUpSuccess,signUpError} = useSelector(mapState);
+        const dispatch = useDispatch();
         const [displayName, setDisplayName] = useState('');
         const [email, setEmail] = useState('');
         const [password, setPassword] = useState('');
         const [confirmPassword, setConfirmPassword] = useState('');
         const [errors, setErrors] = useState([]);
 
+        useEffect( () => {
+            if(signUpSuccess){
+                reset();
+                dispatch(resetAllAuthForms());
+                navigate('/'); // this is a redundant code to navigate to home page once the user has registered itself, this has been also done 
+                               // on app.js directly 
+
+            }
+
+        }, [signUpSuccess]);
+
+        useEffect(() => {
+            console.log('signUpError:', signUpError);
+        
+            if (Array.isArray(signUpError) && signUpError.length > 0) {
+                setErrors(signUpError);
+            }
+        }, [signUpError]);
+        
 
         const reset = () => {
             setDisplayName('');
@@ -31,32 +60,12 @@ const SignUp = props => {
              
         const navigate  = useNavigate();
 
-      const handleFormSubmit = async event => {
+      const handleFormSubmit =  event => {
             event.preventDefault();
-            
+            dispatch(signUpUser({displayName,email,password,confirmPassword}));
 
 
-            if(password !== confirmPassword)
-              {
-                const err = ['Password Don\'t match'];
-                setErrors(err);
-                return;
-                
-            }
-            
-            try{
-                const{user} = await auth.createUserWithEmailAndPassword(email,password);
-            
-                await handleUserProfile(user, {displayName});
-                reset();
-                navigate('/'); // this is a redundant code to navigate to home page once the user has registered itself, this has been also done 
-                               // on app.js directly 
-
-            }
-            catch(err)
-            {
-                console.log(err)
-            }
+           
         } 
 
 

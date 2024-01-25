@@ -1,12 +1,12 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import './styles.scss';
 
-import { signInWithGoogle, auth } from '../../firebase/utils';
+import {  } from '../../firebase/utils';
 
 import FormInput from '../forms/FormInput';
 import Button from './../forms/Button';
 
-import { toast } from 'react-toastify';
+
 import 'react-toastify/dist/ReactToastify.css';
 
 import AuthWrapper from '../AuthWrapper';
@@ -15,13 +15,39 @@ import {Link} from 'react-router-dom';
 import Recovery from '../../pages/Recovery';
 
 import { useNavigate } from 'react-router-dom';
+import {signInUser, signInWithGoogle, resetAllAuthForms} from './../../redux/User/user.actions';
+import {useDispatch, useSelector} from 'react-redux';
+import { createSelector } from 'reselect';
+
+
+const selectUser = (state) => state.user;
+
+const mapState = createSelector(
+  [selectUser],
+  (user) => ({
+    signInSuccess: user.signInSuccess,
+  })
+);
 
 
 
 const  SignIn = props => {
-
+    const {signInSuccess} = useSelector(mapState);
+    const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
+
+
+    useEffect(() => {
+        if(signInSuccess){
+            resetForm();
+            dispatch(resetAllAuthForms());
+            navigate('/');  // this is a redundant code to navigate to home page once the user has registered itself, this has been also done 
+                            // on app.js directly after the 8th commit or part 8 it is not redundant on app.js its done only here
+        }
+
+    }, [signInSuccess]);
 
     const resetForm = () => {
         setEmail('');
@@ -29,38 +55,15 @@ const  SignIn = props => {
 
     }
 
-    const navigate = useNavigate();
 
-    const handleSubmit = async e =>{
+    const handleSubmit =  e =>{
         e.preventDefault();
-        
-
-
-
-        try{
-
-            await auth.signInWithEmailAndPassword(email,password);
-            resetForm();
-            navigate('/');  // this is a redundant code to navigate to home page once the user has registered itself, this has been also done 
-                            // on app.js directly 
-
-        }
-        catch(err)
-        {
-            console.log(err);
-            if (err.code === "auth/weak-password") {
-                // Handle badly formatted email
-                toast.error("Weak password, please make sure the password length is atleast 6 characters");
-                window.alert("Weak password, please make sure the password length is atleast 6 characters");
-              } else {
-                // Handle other authentication errors
-                toast.error("An error occurred while logging in. Please try again later.");
-                window.alert("An error occurred while logging in. Please try again later.");
-              }
-        }
+        dispatch(signInUser({email, password}));        
     }
 
-    
+    const handleGoogleSignIn = () =>{
+        dispatch(signInWithGoogle());
+    }
         
         const configAuthWrapper = {
             headline: 'LogIn'
@@ -79,6 +82,7 @@ const  SignIn = props => {
                         value={email}
                         placeholder="Email"
                         handleChange={(e) => setEmail( e.target.value )}
+                        autoComplete="email"
                        />
                        
                        <FormInput
@@ -100,7 +104,7 @@ const  SignIn = props => {
 
                     <div className='socialSignin'>
                         <div className='row'>
-                            <Button onClick={signInWithGoogle}>
+                            <Button onClick={handleGoogleSignIn}>
                                 Sign in with Google
                             </Button>
     

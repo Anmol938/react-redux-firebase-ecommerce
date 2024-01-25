@@ -1,85 +1,90 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './styles.scss';
 
 import AuthWrapper from './../AuthWrapper';
 import Button from './../forms/Button';
 import FormInput from './../forms/FormInput';
-import { auth, firestore } from '../../firebase/utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { resetPassword , resetAllAuthForms} from './../../redux/User/user.actions';
 import { useNavigate } from 'react-router-dom';
 
-const initialState = {
-  email: '',
-  errors:[]
-};
+const mapState = ({ user }) => ({
+  resetPasswordSuccess: user.resetPasswordSuccess,
+  resetPasswordError: user.resetPasswordError,
+});
 
-function EmailPassword() {
+const EmailPassword = () => {
+  const [email, setEmail] = useState('');
+  const [errors, setErrors] = useState([]);
+  const { resetPasswordSuccess, resetPasswordError } = useSelector(mapState);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [state, setState] = React.useState({ ...initialState });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setState({
-      [name]: value
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const { email } = state;
-
-    try {
-      const userExists = await firestore
-        .collection('users')
-        .where('email', '==', email)
-        .get();
-
-      if (userExists.empty) {
-        console.log('Email does not exist in the database.');
-        return;
-      }
-
-      const config = {
-        url: 'http://localhost:3000/login'
-      };
-
-      await auth
-        .sendPasswordResetEmail(email, config)
-        .then(() => {
-          console.log('Password Reset');
-          navigate('/login'); // Use the navigate function to go to the login page
-        })
-        .catch(() => {
-          console.log('Something went wrong');
-        });
-    } catch (err) {
-      // Handle any errors here
+  useEffect(() => {
+    if (resetPasswordSuccess) {
+      console.log('Password Reset');
+      dispatch(resetAllAuthForms());
+      navigate('/login'); // Use the navigate function to go to the login page
     }
-  };
+  }, [resetPasswordSuccess]);
 
-  const { email } = state;
+  useEffect(() => {
+    console.log(resetPasswordError+ "....anmol.....");
+    console.log("#####" + resetPasswordError.type);
+    if (Array.isArray(resetPasswordError) && resetPasswordError.length > 0) {
+      setErrors(resetPasswordError);
+    console.log("\nline 2 " + errors)  
+    }
+  }, [resetPasswordError]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(resetPassword({ email }));
+   
+  };
 
   const configAuthWrapper = {
-    headline: 'Email Password'
+    headline: 'Email Password',
   };
+
+  // console.log(resetPasswordError + "\n lola" + resetPasswordError);
+  // console.log(errors);
+  // console.log(resetPasswordError + "\n lola" + resetPasswordError);
 
   return (
     <AuthWrapper {...configAuthWrapper}>
       <div className='formWrap'>
+      {     
+                    errors.length  > 0 &&(
+
+                        <ul>
+                            {
+                                errors.map((err, index) => {
+
+                                    return(
+                                        <li key={index}>
+                                            {err}
+                                        </li>
+                                    );
+                                })
+                            }
+                        </ul>
+                    )
+                }
         <form onSubmit={handleSubmit}>
           <FormInput
-            type="email"
-            name="email"
+            type='email'
+            name='email'
             value={email}
-            placeholder="Email"
-            onChange={handleChange}
+            placeholder='Email'
+            handleChange={(e) => setEmail(e.target.value)}
           />
-          <Button type="submit">Email Password</Button>
+          <Button type='submit'>Email Password</Button>
         </form>
+        
       </div>
     </AuthWrapper>
   );
-}
+};
 
 export default EmailPassword;
