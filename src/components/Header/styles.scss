@@ -10,20 +10,19 @@
     margin: 0 auto;
 
     .logo {
-    width: 13.0rem;
-    position:absolute 13.0rem;
-    top: 100%; 
-    left: 10px;
-    -webkit-transform: translateY(-50%);
-    -moz-transform: translateY(-50%);
-    transform: translateY(-50%);
-
-    img {
-    display: block;
-    width: 100%;
-    margin: 0;
-}
-}
+        width: 12rem; /* Adjust the size as needed */
+        position: absolute;
+        top: 50%;
+        left: 0%; /* Center horizontally */
+        transform: translate(-50%, -50%) scale(0.6); /* Adjust the scale factor as needed */
+    
+        img {
+            display: block;
+            width: 100%;
+            margin: 0;
+        }
+    }
+    
 
     .callToActions{
         position: absolute;
@@ -48,9 +47,6 @@
             margin-right: 0;
         }
 
-        span{
-            cursor: pointer;
-        }
 
         a{
             font-size: 1.8rem;

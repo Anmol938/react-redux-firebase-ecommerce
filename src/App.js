@@ -15,6 +15,9 @@ import {  useDispatch } from "react-redux";
 import Dashboard from "./pages/Dashboard";
 
 import WithAuth from "./hoc/withAuth"
+import Admin from "./pages/Admin";
+import WithAdminAuth from "./hoc/withAdminAuth";
+import AdminToolBar from "./components/AdminToolbar";
 
 
 const App = props =>  {
@@ -33,8 +36,8 @@ const App = props =>  {
 
     return (
       <div className="App">
+        <AdminToolBar/>
         <Routes>
-          
           <Route
            exact path="/"
             element={<HomePageLayout><Homepage /></HomePageLayout>}
@@ -48,12 +51,16 @@ const App = props =>  {
             element={<MainLayout ><Login /></MainLayout>} 
           />
            <Route
-            path="/Recovery"
+            path="/recovery"
             element={<MainLayout><Recovery /></MainLayout>}
           />
             <Route
-            path="/Dashboard"
+            path="/dashboard"
             element={<WithAuth><MainLayout><Dashboard /></MainLayout></WithAuth>} 
+            />
+            <Route
+            path="/Admin"
+            element={<WithAdminAuth><MainLayout><Admin /></MainLayout></WithAdminAuth>} 
             />
         </Routes>
       </div>
