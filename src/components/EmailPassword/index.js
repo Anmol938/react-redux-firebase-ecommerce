@@ -5,41 +5,46 @@ import AuthWrapper from './../AuthWrapper';
 import Button from './../forms/Button';
 import FormInput from './../forms/FormInput';
 import { useDispatch, useSelector } from 'react-redux';
-import { resetPassword , resetAllAuthForms} from './../../redux/User/user.actions';
+import { resetPasswordStart, resetUserState} from './../../redux/User/user.actions';
 import { useNavigate } from 'react-router-dom';
+import { createSelector } from 'reselect';
 
-const mapState = ({ user }) => ({
-  resetPasswordSuccess: user.resetPasswordSuccess,
-  resetPasswordError: user.resetPasswordError,
-});
+const selectUser = (state) => state.user;
+const mapState = createSelector(
+  [selectUser],
+  (user) => ({
+      resetPasswordSuccess: user.resetPasswordSuccess,
+      userErr: user.userErr
+  })
+);
 
 const EmailPassword = () => {
   const [email, setEmail] = useState('');
   const [errors, setErrors] = useState([]);
-  const { resetPasswordSuccess, resetPasswordError } = useSelector(mapState);
+  const { resetPasswordSuccess, userErr } = useSelector(mapState);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (resetPasswordSuccess) {
       console.log('Password Reset');
-      dispatch(resetAllAuthForms());
+      dispatch(resetUserState());
       navigate('/login'); // Use the navigate function to go to the login page
     }
   }, [resetPasswordSuccess]);
 
   useEffect(() => {
-    console.log(resetPasswordError+ "....anmol.....");
-    console.log("#####" + resetPasswordError.type);
-    if (Array.isArray(resetPasswordError) && resetPasswordError.length > 0) {
-      setErrors(resetPasswordError);
+    console.log(userErr+ "....anmol.....");
+    console.log("#####" + userErr.type);
+    if (Array.isArray(userErr) && userErr.length > 0) {
+      setErrors(userErr);
     console.log("\nline 2 " + errors)  
     }
-  }, [resetPasswordError]);
+  }, [userErr]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(resetPassword({ email }));
+    dispatch(resetPasswordStart({ email }));
    
   };
 

@@ -8,7 +8,7 @@ import AuthWrapper from '../AuthWrapper';
 
 import { useNavigate } from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
-import {signUpUser, resetAllAuthForms} from './../../redux/User/user.actions';
+import {signUpUserStart} from './../../redux/User/user.actions';
 import { createSelector } from 'reselect';
 
 
@@ -17,12 +17,12 @@ import { createSelector } from 'reselect';
 const selectUser = (state) => state.user;
 
 const mapState = createSelector([selectUser], (user) => ({
-  signUpSuccess: user.signUpSuccess,
-  signUpError: user.signUpError,
+  currentUser: user.currentUser,
+  userErr: user.userErr
 }));
 
 const SignUp = props => {
-        const {signUpSuccess,signUpError} = useSelector(mapState);
+        const {currentUser,userErr} = useSelector(mapState);
         const dispatch = useDispatch();
         const [displayName, setDisplayName] = useState('');
         const [email, setEmail] = useState('');
@@ -31,23 +31,22 @@ const SignUp = props => {
         const [errors, setErrors] = useState([]);
 
         useEffect( () => {
-            if(signUpSuccess){
+            if(currentUser){
                 reset();
-                dispatch(resetAllAuthForms());
                 navigate('/'); // this is a redundant code to navigate to home page once the user has registered itself, this has been also done 
                                // on app.js directly 
 
             }
 
-        }, [signUpSuccess]);
+        }, [currentUser]);
 
         useEffect(() => {
-            console.log('signUpError:', signUpError);
+            console.log('signUpError:', userErr);
         
-            if (Array.isArray(signUpError) && signUpError.length > 0) {
-                setErrors(signUpError);
+            if (Array.isArray(userErr) && userErr.length > 0) {
+                setErrors(userErr);
             }
-        }, [signUpError]);
+        }, [userErr]);
         
 
         const reset = () => {
@@ -62,7 +61,7 @@ const SignUp = props => {
 
       const handleFormSubmit =  event => {
             event.preventDefault();
-            dispatch(signUpUser({displayName,email,password,confirmPassword}));
+            dispatch(signUpUserStart({displayName,email,password,confirmPassword}));
 
 
            

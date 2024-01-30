@@ -3,10 +3,9 @@ import './styles.scss';
 import Logo from './../../assets/logo.jpg';
 
 import { Link } from 'react-router-dom';
-import {auth} from "./../../firebase/utils"
-
-import { useSelector  } from 'react-redux';
+import { useSelector , useDispatch } from 'react-redux';
 import {createSelector} from 'reselect';
+import { signOutUserStart } from '../../redux/User/user.actions';
 
 const selectUser = (state) => state.user;
 
@@ -20,13 +19,13 @@ const selectUser = (state) => state.user;
 
 
 const Header = props => {
-
+    const dispatch = useDispatch();
     const {currentUser} = useSelector(mapState);
 
-
+    // signOut
     const handleLogout = async () => {
         try {
-          await auth.signOut();
+          dispatch(signOutUserStart());
           // Additional clean-up logic if needed
         } catch (error) {
           console.error('Error during logout:', error);

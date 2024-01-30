@@ -12,10 +12,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import AuthWrapper from '../AuthWrapper';
 import {Link} from 'react-router-dom';
 
-import Recovery from '../../pages/Recovery';
-
 import { useNavigate } from 'react-router-dom';
-import {signInUser, signInWithGoogle, resetAllAuthForms} from './../../redux/User/user.actions';
+import {emailSignInStart, googleSignInStart} from './../../redux/User/user.actions';
 import {useDispatch, useSelector} from 'react-redux';
 import { createSelector } from 'reselect';
 
@@ -25,14 +23,14 @@ const selectUser = (state) => state.user;
 const mapState = createSelector(
   [selectUser],
   (user) => ({
-    signInSuccess: user.signInSuccess,
+    currentUser: user.currentUser
   })
 );
 
 
 
 const  SignIn = props => {
-    const {signInSuccess} = useSelector(mapState);
+    const {currentUser} = useSelector(mapState);
     const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -40,14 +38,13 @@ const  SignIn = props => {
 
 
     useEffect(() => {
-        if(signInSuccess){
+        if(currentUser){
             resetForm();
-            dispatch(resetAllAuthForms());
             navigate('/');  // this is a redundant code to navigate to home page once the user has registered itself, this has been also done 
                             // on app.js directly after the 8th commit or part 8 it is not redundant on app.js its done only here
         }
 
-    }, [signInSuccess]);
+    }, [currentUser]);
 
     const resetForm = () => {
         setEmail('');
@@ -58,11 +55,11 @@ const  SignIn = props => {
 
     const handleSubmit =  e =>{
         e.preventDefault();
-        dispatch(signInUser({email, password}));        
+        dispatch(emailSignInStart({email, password}));        
     }
 
     const handleGoogleSignIn = () =>{
-        dispatch(signInWithGoogle());
+        dispatch(googleSignInStart());
     }
         
         const configAuthWrapper = {
