@@ -19,6 +19,9 @@ import Admin from "./pages/Admin";
 import WithAdminAuth from "./hoc/withAdminAuth";
 import AdminToolBar from "./components/AdminToolbar";
 
+import AdminLayout from './layouts/AdminLayout';
+import DashboardLayout from './layouts/DashboardLayout';
+
 
 const App = props =>  {
   
@@ -56,11 +59,11 @@ const App = props =>  {
           />
             <Route
             path="/dashboard"
-            element={<WithAuth><MainLayout><Dashboard /></MainLayout></WithAuth>} 
+            element={<WithAuth><DashboardLayout><Dashboard /></DashboardLayout></WithAuth>} 
             />
             <Route
             path="/Admin"
-            element={<WithAdminAuth><MainLayout><Admin /></MainLayout></WithAdminAuth>} 
+            element={<WithAdminAuth><AdminLayout><Admin /></AdminLayout></WithAdminAuth>} 
             />
         </Routes>
       </div>
