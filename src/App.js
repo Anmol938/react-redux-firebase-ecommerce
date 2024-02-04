@@ -21,7 +21,7 @@ import AdminToolBar from "./components/AdminToolbar";
 
 import AdminLayout from './layouts/AdminLayout';
 import DashboardLayout from './layouts/DashboardLayout';
-
+import Search from "./pages/Search";
 
 const App = props =>  {
   
@@ -44,6 +44,10 @@ const App = props =>  {
           <Route
            exact path="/"
             element={<HomePageLayout><Homepage /></HomePageLayout>}
+          />
+          <Route
+          path="/search"
+          element={<MainLayout><Search/></MainLayout>}
           />
           <Route
           path="/registration"
