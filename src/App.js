@@ -22,6 +22,7 @@ import AdminToolBar from "./components/AdminToolbar";
 import AdminLayout from './layouts/AdminLayout';
 import DashboardLayout from './layouts/DashboardLayout';
 import Search from "./pages/Search";
+import ProductDetails from './pages/ProductDetails'
 
 const App = props =>  {
   
@@ -52,6 +53,10 @@ const App = props =>  {
           <Route 
           path="/search/:filterType"
           element={<MainLayout><Search/></MainLayout>}
+          />
+          <Route 
+          path="/product/:productID"
+          element={<MainLayout><ProductDetails/></MainLayout>}
           />
           <Route
           path="/registration"

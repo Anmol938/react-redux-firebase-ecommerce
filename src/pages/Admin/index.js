@@ -5,8 +5,10 @@ import Modal from './../../components/Modal';
 import FormInput from './../../components/forms/FormInput';
 import FormSelect from './../../components/forms/FormSelect';
 import Button from './../../components/forms/Button';
+import LoadMore from './../../components/LoadMore';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import './styles.scss';
-import LoadMore from '../../components/LoadMore';
 
 const mapState = ({ productsData }) => ({
   products: productsData.products
@@ -20,6 +22,7 @@ const Admin = props => {
   const [productName, setProductName] = useState('');
   const [productThumbnail, setProductThumbnail] = useState('');
   const [productPrice, setProductPrice] = useState(0);
+  const [productDesc, setProductDesc] = useState('');
 
   const { data, queryDoc, isLastPage } = products;
 
@@ -27,7 +30,6 @@ const Admin = props => {
     dispatch(
       fetchProductsStart()
     );
-
   }, []);
 
   const toggleModal = () => setHideModal(!hideModal);
@@ -43,6 +45,7 @@ const Admin = props => {
     setProductName('');
     setProductThumbnail('');
     setProductPrice(0);
+    setProductDesc('');
   };
 
   const handleSubmit = e => {
@@ -53,7 +56,8 @@ const Admin = props => {
         productCategory,
         productName,
         productThumbnail,
-        productPrice
+        productPrice,
+        productDesc,
       })
     );
     resetForm();
@@ -72,8 +76,6 @@ const Admin = props => {
   const configLoadMore = {
     onLoadMoreEvt: handleLoadMore,
   };
-
-
 
   return (
     <div className="admin">
@@ -132,6 +134,25 @@ const Admin = props => {
               handleChange={e => setProductPrice(e.target.value)}
             />
 
+            
+
+              <CKEditor
+              editor={ ClassicEditor }
+              data="<p>Hello from CKEditor 5!</p>"
+              onInit={ editor => {
+                  // You can store the "editor" and use when it is needed.
+                  console.log( 'Editor is ready to use!', editor );
+              } }
+              onChange={ ( event, editor ) => {
+                const data_editor = editor.getData();
+                setProductDesc(data_editor);
+               }}
+
+             
+          />
+
+            <br />
+
             <Button type="submit">
               Add product
             </Button>
@@ -155,7 +176,7 @@ const Admin = props => {
               <td>
                 <table className="results" border="0" cellPadding="10" cellSpacing="0">
                   <tbody>
-                  {(Array.isArray(data) && data.length > 0) && data.map((product, index) => {
+                    {(Array.isArray(data) && data.length > 0) && data.map((product, index) => {
                       const {
                         productName,
                         productThumbnail,
