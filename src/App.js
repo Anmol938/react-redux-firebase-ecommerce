@@ -49,6 +49,10 @@ const App = props =>  {
           path="/search"
           element={<MainLayout><Search/></MainLayout>}
           />
+          <Route 
+          path="/search/:filterType"
+          element={<MainLayout><Search/></MainLayout>}
+          />
           <Route
           path="/registration"
           element={<MainLayout><Registration /></MainLayout>}
