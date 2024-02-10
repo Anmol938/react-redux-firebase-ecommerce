@@ -25,6 +25,8 @@ import Search from "./pages/Search";
 import ProductDetails from './pages/ProductDetails'
 
 import Cart from './pages/Cart';
+import Payment from './pages/Payment';
+
 
 
 const App = props =>  {
@@ -64,6 +66,10 @@ const App = props =>  {
           <Route 
           path="/cart"
           element={<MainLayout><Cart/></MainLayout>}
+          />
+          <Route 
+          path="/payment"
+          element={<WithAuth><MainLayout><Payment/></MainLayout></WithAuth>}
           />
           <Route
           path="/registration"

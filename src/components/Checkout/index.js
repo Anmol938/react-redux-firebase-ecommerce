@@ -100,7 +100,7 @@ const Checkout = ({ }) => {
                                   </Button>
                                 </td>
                                 <td>
-                                  <Button>
+                                  <Button onClick={() => navigate('/payment')}>
                                     Checkout
                                   </Button>
                                 </td>
