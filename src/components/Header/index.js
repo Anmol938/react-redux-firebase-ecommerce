@@ -64,12 +64,12 @@ const Header = props => {
                 </li>
     
                 {currentUser && [
-                  <li>
+                  <li key={1}>
                     <Link to="/dashboard">
                       My Account
                     </Link>
                   </li>,
-                  <li>
+                  <li key={2}>
                     <span onClick={() => handleLogout()}>
                       LogOut
                     </span>
@@ -77,12 +77,12 @@ const Header = props => {
                 ]}
     
                 {!currentUser && [
-                  <li>
+                  <li key={1}>
                     <Link to="/registration">
                       Register
                     </Link>
                   </li>,
-                  <li>
+                  <li key={2}>
                     <Link to="/login">
                       Login
                     </Link>

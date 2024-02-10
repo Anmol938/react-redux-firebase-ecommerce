@@ -3,6 +3,7 @@ import logger from 'redux-logger';
 import { thunk } from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddle from 'redux-saga';
+import { persistStore } from 'redux-persist';
 
 import rootReducer from './rootReducer';
 import rootSaga from './rootSaga';
@@ -13,4 +14,9 @@ export const middelwares = [thunk, sagaMiddleware, logger];
 export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(...middelwares)));
 sagaMiddleware.run(rootSaga);
 
-export default store;
+export const persistor = persistStore(store);
+
+export default {
+  store,
+  persistor
+};
