@@ -6,21 +6,17 @@ import { Link } from 'react-router-dom';
 import { useSelector , useDispatch } from 'react-redux';
 import {createSelector} from 'reselect';
 import { signOutUserStart } from '../../redux/User/user.actions';
+import { selectCartItemsCount } from './../../redux/Cart/cart.selectors';
 
-const selectUser = (state) => state.user;
 
-
- const mapState = createSelector(
-    [selectUser],
-    (user) => ({
-      currentUser: user.currentUser,
-    })
-  );
-
+const mapState = (state) => ({
+  currentUser: state.user.currentUser,
+  totalNumCartItems: selectCartItemsCount(state)
+});
 
 const Header = props => {
     const dispatch = useDispatch();
-    const {currentUser} = useSelector(mapState);
+    const {currentUser, totalNumCartItems } = useSelector(mapState);
 
     // signOut
     const handleLogout = async () => {
@@ -33,72 +29,78 @@ const Header = props => {
       };
 
 
-    return (
+      return (
         <header className="header">
-         <div className='wrap'>
-            <div className='logo'>
-                <Link to='/'>
-                <img src={Logo} alt="Logo image_replica"/>
-                </Link>
-            </div>
-            <nav>
-          <ul>
-            <li>
+          <div className="wrap">
+            <div className="logo">
               <Link to="/">
-                Home
+                <img src={Logo} alt="SimpleTut LOGO" />
               </Link>
-            </li>
-            <li>
-              <Link to="/search">
-                Search
-              </Link>
-            </li>
-          </ul>
-        </nav>
-            <div className='callToActions'>
-
-                {currentUser && (
-
-                    <ul>
-                        <li>
-                            <Link to="/Dashboard"> My Account </Link>
-                        </li>
-
-                        <li>
-                            <span onClick={handleLogout}>
-                                LOGOUT
-                            </span>
-                        </li>
-                    </ul>
-                )
-
-                }
-
-
-                {!currentUser && (
-       <ul>
-        {/* <li>
-           <Link to="/Dashboard"> Dashboard </Link>
-       </li> */}
-       <li>
-           <Link to="/registration"> Register </Link>
-       </li>
-
-       <li>
-           <Link to="/login"> Login </Link>
-       </li>
-   </ul>
-
-
-                )}
-
-         
             </div>
-
-            </div>       
+    
+            <nav>
+              <ul>
+                <li>
+                  <Link to="/">
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/search">
+                    Search
+                  </Link>
+                </li>
+              </ul>
+            </nav>
+    
+            <div className="callToActions">
+    
+              <ul>
+    
+                <li>
+                  <Link>
+                    Your Cart ({totalNumCartItems})
+                  </Link>
+                </li>
+    
+                {currentUser && [
+                  <li>
+                    <Link to="/dashboard">
+                      My Account
+                    </Link>
+                  </li>,
+                  <li>
+                    <span onClick={() => handleLogout()}>
+                      LogOut
+                    </span>
+                  </li>
+                ]}
+    
+                {!currentUser && [
+                  <li>
+                    <Link to="/registration">
+                      Register
+                    </Link>
+                  </li>,
+                  <li>
+                    <Link to="/login">
+                      Login
+                    </Link>
+                  </li>
+                ]}
+    
+              </ul>
+    
+    
+    
+    
+    
+            </div>
+          </div>
         </header>
-    );
-};
+      );
+    };
+    
 
 
 Header.defaultProps ={
