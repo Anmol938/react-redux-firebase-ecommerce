@@ -27,6 +27,9 @@ import ProductDetails from './pages/ProductDetails'
 import Cart from './pages/Cart';
 import Payment from './pages/Payment';
 
+import Order from './pages/Order';
+
+
 
 
 const App = props =>  {
@@ -86,6 +89,10 @@ const App = props =>  {
             <Route
             path="/dashboard"
             element={<WithAuth><DashboardLayout><Dashboard /></DashboardLayout></WithAuth>} 
+            />
+            <Route
+            path="/order/:orderID"
+            element={<WithAuth><DashboardLayout><Order /></DashboardLayout></WithAuth>} 
             />
             <Route
             path="/Admin"

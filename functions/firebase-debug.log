@@ -1,0 +1,67 @@
+[debug] [2024-02-11T10:28:31.032Z] ----------------------------------------------------------------------
+[debug] [2024-02-11T10:28:31.034Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\anmol\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js emulators:start --only functions
+[debug] [2024-02-11T10:28:31.035Z] CLI Version:   13.2.1
+[debug] [2024-02-11T10:28:31.035Z] Platform:      win32
+[debug] [2024-02-11T10:28:31.035Z] Node Version:  v18.18.0
+[debug] [2024-02-11T10:28:31.036Z] Time:          Sun Feb 11 2024 15:58:31 GMT+0530 (India Standard Time)
+[debug] [2024-02-11T10:28:31.036Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-02-11T10:28:31.148Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-02-11T10:28:31.148Z] > authorizing via signed-in user (anmol938@gmail.com)
+[info] i  emulators: Starting emulators: functions {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: functions"}}
+[debug] [2024-02-11T10:28:31.157Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2024-02-11T10:28:31.157Z] assigned listening specs for emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}]},"metadata":{"message":"assigned listening specs for emulators"}}
+[debug] [2024-02-11T10:28:31.166Z] [hub] writing locator at C:\Users\anmol\AppData\Local\Temp\hub-ecommerce-website-837bd.json
+[debug] [2024-02-11T10:28:31.181Z] [functions] Functions Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2024-02-11T10:28:31.181Z] [eventarc] Eventarc Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2024-02-11T10:28:31.181Z] late-assigned ports for functions and eventarc emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"functions":[{"address":"127.0.0.1","family":"IPv4","port":5001}],"eventarc":[{"address":"127.0.0.1","family":"IPv4","port":9299}]},"metadata":{"message":"late-assigned ports for functions and eventarc emulators"}}
+[warn] !  functions: The following emulators are not running, calls to these services from the Functions emulator will affect production: auth, firestore, database, hosting, pubsub, storage {"metadata":{"emulator":{"name":"functions"},"message":"The following emulators are not running, calls to these services from the Functions emulator will affect production: \u001b[1mauth, firestore, database, hosting, pubsub, storage\u001b[22m"}}
+[debug] [2024-02-11T10:28:31.186Z] defaultcredentials: writing to file C:\Users\anmol\AppData\Roaming\firebase\anmol938_gmail_com_application_default_credentials.json
+[debug] [2024-02-11T10:28:31.200Z] Setting GAC to C:\Users\anmol\AppData\Roaming\firebase\anmol938_gmail_com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to C:\\Users\\anmol\\AppData\\Roaming\\firebase\\anmol938_gmail_com_application_default_credentials.json"}}
+[debug] [2024-02-11T10:28:31.202Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/ecommerce-website-837bd/adminSdkConfig [none]
+[debug] [2024-02-11T10:28:31.656Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/ecommerce-website-837bd/adminSdkConfig 200
+[debug] [2024-02-11T10:28:31.656Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/ecommerce-website-837bd/adminSdkConfig {"projectId":"ecommerce-website-837bd","storageBucket":"ecommerce-website-837bd.appspot.com"}
+[debug] [2024-02-11T10:28:31.900Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2024-02-11T10:28:31.900Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: port"}}
+[debug] [2024-02-11T10:28:31.900Z] Starting Emulator UI with command {"binary":"node","args":["C:\\Users\\anmol\\.cache\\firebase\\emulators\\ui-v1.11.7\\server\\server.js"],"optionalArgs":[],"joinArgs":false} {"metadata":{"emulator":{"name":"ui"},"message":"Starting Emulator UI with command {\"binary\":\"node\",\"args\":[\"C:\\\\Users\\\\anmol\\\\.cache\\\\firebase\\\\emulators\\\\ui-v1.11.7\\\\server\\\\server.js\"],\"optionalArgs\":[],\"joinArgs\":false}"}}
+[info] i  ui: Emulator UI logging to ui-debug.log {"metadata":{"emulator":{"name":"ui"},"message":"Emulator UI logging to \u001b[1mui-debug.log\u001b[22m"}}
+[debug] [2024-02-11T10:28:32.024Z] Web / API server started at 127.0.0.1:4000
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at 127.0.0.1:4000\n"}}
+[debug] [2024-02-11T10:28:32.024Z] Web / API server started at ::1:4000
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at ::1:4000\n"}}
+[info] i  functions: Watching "E:\react-redux-firebase-ecomerce\functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"E:\\react-redux-firebase-ecomerce\\functions\" for Cloud Functions..."}}
+[debug] [2024-02-11T10:28:32.181Z] Validating nodejs source
+[debug] [2024-02-11T10:28:33.508Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "18"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1",
+    "stripe": "^14.16.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-02-11T10:28:33.508Z] Building nodejs source
+[debug] [2024-02-11T10:28:33.508Z] Failed to find version of module node: reached end of search path E:\react-redux-firebase-ecomerce\functions\node_modules
+[info] +  functions: Using node@18 from host. 
+[debug] [2024-02-11T10:28:33.510Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-02-11T10:28:33.517Z] Found firebase-functions binary at 'E:\react-redux-firebase-ecomerce\functions\node_modules\.bin\firebase-functions'
