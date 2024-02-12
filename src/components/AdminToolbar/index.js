@@ -2,7 +2,7 @@ import React from 'react';
 import './styles.scss';
 import {Link} from 'react-router-dom';
 import { createSelector } from 'reselect';
-import { UseSelector, useSelector } from 'react-redux/es/hooks/useSelector';
+import {  useSelector } from 'react-redux';
 import { checkUserIsAdmin } from '../../utils';
 
 const selectUser = (state) => state.user;
